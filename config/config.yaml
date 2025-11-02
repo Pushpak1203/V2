@@ -1,0 +1,6 @@
+num_agents: 10
+map: "S"
+render_mode: "onscreen"
+udp_port: 5000
+encryption: true
+random_seed: 42
