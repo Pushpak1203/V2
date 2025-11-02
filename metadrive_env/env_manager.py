@@ -11,16 +11,9 @@ def create_env(num_agents: int = 10, map_name: str = "X", num_scenarios: int = 5
         start_seed=0,
         num_scenarios=num_scenarios,
 
-        # ✅ Fixed map configuration
+        # ✅ Fixed map configuration - just specify the map name
         map=map_name,
-        map_config=dict(
-            type=map_name,
-            lane_width=3.5,
-            lane_num=2,
-            exit_length=20.0,
-            start_position=[(0, 0)],
-        ),
-
+        
         traffic_density=0.15,
         random_traffic=True,
         traffic_mode="hybrid",
@@ -32,12 +25,8 @@ def create_env(num_agents: int = 10, map_name: str = "X", num_scenarios: int = 5
         show_interface=False,
         show_fps=True,
 
-        sensors=dict(
-            lidar=("metadrive.component.sensors.lidar.Lidar", {}),
-            lane_line_detector=("metadrive.component.sensors.lane_line_detector.LaneLineDetector", {}),
-            main_camera=("metadrive.component.sensors.rgb_camera.RGBCamera", dict(width=1280, height=720)),
-            dashboard=("metadrive.component.sensors.dashboard.Dashboard", {}),
-        ),
+        # ✅ Removed custom sensors config - use MetaDrive defaults
+        # The environment will automatically configure appropriate sensors
 
         vehicle_config=dict(
             show_navi_mark=True,
@@ -52,4 +41,5 @@ def create_env(num_agents: int = 10, map_name: str = "X", num_scenarios: int = 5
         return env
     except Exception as e:
         print("[ERROR] ❌ Failed to initialize MetaDrive environment.")
+        print(f"[ERROR] Details: {str(e)}")
         raise e
