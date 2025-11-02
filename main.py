@@ -12,7 +12,14 @@ def run_simulation():
 
     # --- Step 1: Setup Environment (Procedural Map, Safe Defaults) ---
     env = create_env(num_agents=15, map_name="X", num_scenarios=50, render_mode="onscreen")
-    obs = env.reset()
+    
+    # ✅ Fixed: env.reset() returns (obs, info) tuple in Gymnasium API
+    reset_result = env.reset()
+    if isinstance(reset_result, tuple):
+        obs, info = reset_result
+    else:
+        obs = reset_result
+    
     print("[System] Simulation environment initialized successfully.")
 
     # --- Step 2: Safe Socket Initialization ---
@@ -37,14 +44,25 @@ def run_simulation():
         for step in range(1000):
             # Each observation is a dict (agent_id -> obs)
             actions = {agent_id: [0.0, 1.0] for agent_id in obs.keys()}
-            obs, rewards, dones, truncated, infos = env.step(actions)
+            
+            # ✅ Fixed: env.step() returns (obs, rewards, terminated, truncated, infos)
+            step_result = env.step(actions)
+            obs, rewards, terminated, truncated, infos = step_result
+            
+            # Combine terminated and truncated to get dones
+            dones = {agent_id: terminated.get(agent_id, False) or truncated.get(agent_id, False) 
+                     for agent_id in obs.keys()}
 
             # Render the simulation
-            env.render(mode="onscreen")
+            env.render()
 
             # Reset when all agents are done
             if all(dones.values()):
-                obs = env.reset()
+                reset_result = env.reset()
+                if isinstance(reset_result, tuple):
+                    obs, info = reset_result
+                else:
+                    obs = reset_result
 
             time.sleep(0.01)
 
