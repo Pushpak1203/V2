@@ -7,6 +7,8 @@ Features:
 - Hybrid A* path planning integration
 """
 
+from communication.logging_config import setup_logging
+setup_logging(log_file="logs/communication.log", level=10)  # DEBUG
 from metadrive.envs.marl_envs import MultiAgentMetaDrive
 from communication.broadcaster import start_broadcaster
 from communication.receiver import start_receiver
@@ -447,7 +449,7 @@ def run_advanced_simulation(map_config="city"):
             time.sleep(0.01)
 
     except KeyboardInterrupt:
-        print("\n[System] Simulation interrupted by user.")
+        print("\n[System] Simulation interrupted by user.")     
     finally:
         env.close()
         print("[System] Simulation ended cleanly.")
