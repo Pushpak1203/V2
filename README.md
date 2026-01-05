@@ -74,8 +74,10 @@ The project evaluates how shared situational awareness improves **safety**, **co
 ## ⚙️ Installation
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/Pushpak1203/V2
+cd V2
+python -m venv venv
+venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
